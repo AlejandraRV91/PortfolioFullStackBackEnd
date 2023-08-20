@@ -2,8 +2,8 @@
 
 const Joi = require("joi");
 
-// Validation middleware for creating an owner
-const validateOwner = (req, res, next) => {
+// Validation middleware for creating an store
+const validateStore = (req, res, next) => {
 	const schema = Joi.object({
 		name: Joi.string().trim().required(),
 		contact_email: Joi.string().trim().email(),
@@ -28,6 +28,8 @@ const validatePet = (req, res, next) => {
 		weight: Joi.number().precision(2),
 		breed: Joi.string().trim(),
 		owner_id: Joi.number().integer().required(),
+		price: Joi.number().precision(2).required(),
+		store_id: Joi.number().integer().required(),
 		image_url: Joi.string().uri(),
 		description: Joi.string().trim(),
 	});
@@ -41,6 +43,6 @@ const validatePet = (req, res, next) => {
 };
 
 module.exports = {
-	validateOwner,
+	validateStore,
 	validatePet,
 };

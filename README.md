@@ -32,7 +32,7 @@ Make sure you have Node.js and PostgreSQL installed on your system.
 PORT= The port where your application will run (for example, 3000)
 PG_HOST= The host where your PostgreSQL database is running (e.g., localhost)
 PG_PORT= The port on which your PostgreSQL database is listening (default is 5432)
-PG_DATABASE= singleresourcedb
+PG_DATABASE= petpalacehub
 PG_USER= The username for connecting to your PostgreSQL database (e.g., postgres)
 PG_PASSWORD= The password for the specified database user (leave empty if not applicable)
 ```
@@ -69,14 +69,13 @@ This will start the server on the specified port and connect to the PostgreSQL d
 
 The project uses a PostgreSQL database with two main tables: `Owners` and `Pets`. Here's a description of both tables:
 
-### Owners
+### Stores
 
--   `id`: Unique identifier of the owner (integer).
--   `name`: Owner's name (string, max 150 characters).
--   `contact_email`: Owner's contact email (string, max 100 characters).
--   `phone_number`: Owner's phone number (string, max 20 characters).
+-   `id`: Unique identifier of the store (integer).
+-   `name`: store's name (string, max 150 characters).
+-   `contact_email`: store's contact email (string, max 100 characters).
+-   `phone_number`: store's phone number (string, max 20 characters).
 -   `address`: Owner's address (text).
--   `uq_owner_name`: Unique constraint on owner's name.
 
 ### Pets
 
@@ -88,7 +87,8 @@ The project uses a PostgreSQL database with two main tables: `Owners` and `Pets`
 -   `entry_date`: Pet's entry date (date, default: current date).
 -   `description`: Pet's description (text).
 -   `breed`: Pet's breed (string, max 100 characters).
--   `owner_id`: ID of the owner the pet belongs to (integer).
+-   `price`: Pet's price (2 decimals).
+-   `store_id`: ID of the owner the pet belongs to (integer).
 -   `image_url`: URL of the pet's image (text).
 -   Referential integrity and age check constraints.
 
@@ -96,10 +96,10 @@ The project uses a PostgreSQL database with two main tables: `Owners` and `Pets`
 
 Below is a list of the routes in the application:
 
-### Owners
+### Stores
 
--   `GET /pets/owners`: Returns a list of owners.
--   `POST /pets/owners`: Creates a new owner and stores it in the database.
+-   `GET /pets/stores`: Returns a list of stores.
+-   `POST /pets/stores`: Creates a new store in the database.
 
 ### Pets
 

@@ -3,8 +3,8 @@
 const express = require("express");
 const router = express.Router();
 const {
-	getOwners,
-	createOwner,
+	getStores,
+	createStore,
 	getPets,
 	createPet,
 	updatePet,
@@ -14,14 +14,14 @@ const {
 } = require("../queries/mainQueries");
 
 const {
-	validateOwner,
+	validateStore,
 	validatePet,
 } = require("../validations/mainValidations");
 
 // Route to get a list of owners
-router.get("/owners", async (req, res) => {
+router.get("/stores", async (req, res) => {
 	try {
-		const owners = await getOwners();
+		const owners = await getStores();
 		res.json(owners);
 	} catch (error) {
 		res.status(500).json({
@@ -31,10 +31,10 @@ router.get("/owners", async (req, res) => {
 });
 
 // Route to create a new owner
-router.post("/owners", validateOwner, async (req, res) => {
+router.post("/stores", validateStore, async (req, res) => {
 	const { name, contact_email, phone_number, address } = req.body;
 	try {
-		const newOwner = await createOwner(
+		const newOwner = await createStore(
 			name,
 			contact_email,
 			phone_number,

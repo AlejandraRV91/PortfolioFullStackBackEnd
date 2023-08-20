@@ -3,34 +3,34 @@
 const db = require("../db/dbConfig");
 
 /**
- * Get a list of all owners.
- * @returns {Promise<Array>} List of owner records.
+ * Get a list of all pet stores.
+ * @returns {Promise<Array>} List of pet store records.
  */
-const getOwners = async () => {
+const getStores = async () => {
 	try {
-		return await db.manyOrNone("SELECT * FROM Owners;");
+		return await db.manyOrNone("SELECT * FROM PetStores;");
 	} catch (error) {
-		console.error("Error fetching owners:", error);
+		console.error("Error fetching stores:", error);
 		return [];
 	}
 };
 
 /**
- * Create a new owner record.
- * @param {string} name - Owner's name.
- * @param {string} contact_email - Owner's contact email.
- * @param {string} phone_number - Owner's phone number.
- * @param {string} address - Owner's address.
- * @returns {Promise<Object>} Created owner record.
+ * Create a new pet store record.
+ * @param {string} name - Store's name.
+ * @param {string} contact_email - Store's contact email.
+ * @param {string} phone_number - Store's phone number.
+ * @param {string} address - Store's address.
+ * @returns {Promise<Object>} Created pet store record.
  */
-const createOwner = async (name, contact_email, phone_number, address) => {
+const createStore = async (name, contact_email, phone_number, address) => {
 	try {
 		return await db.oneOrNone(
-			"INSERT INTO Owners (name, contact_email, phone_number, address) VALUES ($1, $2, $3, $4) RETURNING *;",
+			"INSERT INTO PetStores (name, contact_email, phone_number, address) VALUES ($1, $2, $3, $4) RETURNING *;",
 			[name, contact_email, phone_number, address]
 		);
 	} catch (error) {
-		console.error("Error creating owner:", error);
+		console.error("Error creating store:", error);
 		throw error;
 	}
 };
@@ -55,7 +55,8 @@ const getPets = async () => {
  * @param {number} age - Pet's age.
  * @param {number} weight - Pet's weight.
  * @param {string} breed - Pet's breed.
- * @param {number} owner_id - ID of the pet's owner.
+ * @param {number} price - Pet's price.
+ * @param {number} store_id - ID of the pet's store.
  * @param {string} image_url - URL of the pet's image.
  * @param {string} description - Pet's description.
  * @returns {Promise<Object>} Created pet record.
@@ -66,14 +67,25 @@ const createPet = async (
 	age,
 	weight,
 	breed,
-	owner_id,
+	price,
+	store_id,
 	image_url,
 	description
 ) => {
 	try {
 		return await db.oneOrNone(
-			"INSERT INTO Pets (name, type, age, weight, breed, owner_id, image_url, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;",
-			[name, type, age, weight, breed, owner_id, image_url, description]
+			"INSERT INTO Pets (name, type, age, weight, breed, price, store_id, image_url, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;",
+			[
+				name,
+				type,
+				age,
+				weight,
+				breed,
+				price,
+				store_id,
+				image_url,
+				description,
+			]
 		);
 	} catch (error) {
 		console.error("Error creating pet:", error);
@@ -89,7 +101,8 @@ const createPet = async (
  * @param {number} age - Pet's age.
  * @param {number} weight - Pet's weight.
  * @param {string} breed - Pet's breed.
- * @param {number} owner_id - ID of the pet's owner.
+ * @param {number} price - Pet's price.
+ * @param {number} store_id - ID of the pet's store.
  * @param {string} image_url - URL of the pet's image.
  * @param {string} description - Pet's description.
  * @returns {Promise<Object>} Updated pet record.
@@ -101,13 +114,14 @@ const updatePet = async (
 	age,
 	weight,
 	breed,
-	owner_id,
+	price,
+	store_id,
 	image_url,
 	description
 ) => {
 	try {
 		return await db.oneOrNone(
-			"UPDATE Pets SET name = $2, type = $3, age = $4, weight = $5, breed = $6, owner_id = $7, image_url = $8, description = $9 WHERE id = $1 RETURNING *;",
+			"UPDATE Pets SET name = $2, type = $3, age = $4, weight = $5, breed = $6, price = $7, store_id = $8, image_url = $9, description = $10 WHERE id = $1 RETURNING *;",
 			[
 				id,
 				name,
@@ -115,7 +129,8 @@ const updatePet = async (
 				age,
 				weight,
 				breed,
-				owner_id,
+				price,
+				store_id,
 				image_url,
 				description,
 			]
@@ -146,6 +161,7 @@ const deletePet = async (id) => {
 /**
  * Get a list of unique pet breeds.
  * @returns {Promise<Array>} List of unique pet breeds.
+ * @throws {Error} If there is an error while fetching unique pet breeds.
  */
 const getUniqueBreeds = async () => {
 	try {
@@ -160,6 +176,7 @@ const getUniqueBreeds = async () => {
 /**
  * Get a list of unique pet types.
  * @returns {Promise<Array>} List of unique pet types.
+ * @throws {Error} If there is an error while fetching unique pet types.
  */
 const getUniqueTypes = async () => {
 	try {
@@ -172,8 +189,8 @@ const getUniqueTypes = async () => {
 };
 
 module.exports = {
-	getOwners,
-	createOwner,
+	getStores,
+	createStore,
 	getPets,
 	createPet,
 	updatePet,
