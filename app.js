@@ -3,6 +3,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const mainController = require("./controllers/mainController");
 
 // Middleware to remove "X-Powered-By" header
 app.use((req, res, next) => {
@@ -12,6 +13,8 @@ app.use((req, res, next) => {
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/pets", mainController);
 
 // Welcome message for root endpoint
 app.get("/", (req, res) => {
