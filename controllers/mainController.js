@@ -11,12 +11,38 @@ const {
 	deletePet,
 	getUniqueBreeds,
 	getUniqueTypes,
+	getPetByID,
+	getStoreByID,
 } = require("../queries/mainQueries");
 
 const {
 	validateStore,
 	validatePet,
 } = require("../validations/mainValidations");
+
+// Route to get unique pet breeds
+router.get("/breeds", async (req, res) => {
+	try {
+		const breeds = await getUniqueBreeds();
+		res.json(breeds);
+	} catch (error) {
+		res.status(500).json({
+			error: "An error occurred while fetching unique pet breeds.",
+		});
+	}
+});
+
+// Route to get unique pet types
+router.get("/types", async (req, res) => {
+	try {
+		const types = await getUniqueTypes();
+		res.json(types);
+	} catch (error) {
+		res.status(500).json({
+			error: "An error occurred while fetching unique pet types.",
+		});
+	}
+});
 
 // Route to get a list of owners
 router.get("/stores", async (req, res) => {
@@ -26,6 +52,18 @@ router.get("/stores", async (req, res) => {
 	} catch (error) {
 		res.status(500).json({
 			error: "An error occurred while fetching owners.",
+		});
+	}
+});
+
+// Route to get a pet by id
+router.get("/stores/:id", async (req, res) => {
+	try {
+		const pet = await getStoreByID(req.params.id);
+		res.json(pet);
+	} catch (error) {
+		res.status(500).json({
+			error: "An error occurred while fetching store.",
 		});
 	}
 });
@@ -48,6 +86,18 @@ router.post("/stores", validateStore, async (req, res) => {
 	}
 });
 
+// Route to get a pet by id
+router.get("/:id", async (req, res) => {
+	try {
+		const pet = await getPetByID(req.params.id);
+		res.json(pet);
+	} catch (error) {
+		res.status(500).json({
+			error: "An error occurred while fetching pet.",
+		});
+	}
+});
+
 // Route to get a list of pets
 router.get("/", async (req, res) => {
 	try {
@@ -62,8 +112,17 @@ router.get("/", async (req, res) => {
 
 // Route to create a new pet
 router.post("/", validatePet, async (req, res) => {
-	const { name, type, age, weight, breed, owner_id, image_url, description } =
-		req.body;
+	const {
+		name,
+		type,
+		age,
+		weight,
+		breed,
+		price,
+		store_id,
+		image_url,
+		description,
+	} = req.body;
 	try {
 		const newPet = await createPet(
 			name,
@@ -71,7 +130,8 @@ router.post("/", validatePet, async (req, res) => {
 			age,
 			weight,
 			breed,
-			owner_id,
+			price,
+			store_id,
 			image_url,
 			description
 		);
@@ -86,8 +146,18 @@ router.post("/", validatePet, async (req, res) => {
 // Route to update a pet
 router.put("/:id", validatePet, async (req, res) => {
 	const petId = parseInt(req.params.id);
-	const { name, type, age, weight, breed, owner_id, image_url, description } =
-		req.body;
+	const {
+		name,
+		type,
+		age,
+		weight,
+		breed,
+		price,
+		store_id,
+		image_url,
+		is_available,
+		description,
+	} = req.body;
 	try {
 		const updatedPet = await updatePet(
 			petId,
@@ -96,7 +166,9 @@ router.put("/:id", validatePet, async (req, res) => {
 			age,
 			weight,
 			breed,
-			owner_id,
+			price,
+			is_available,
+			store_id,
 			image_url,
 			description
 		);
@@ -121,30 +193,6 @@ router.delete("/:id", async (req, res) => {
 	} catch (error) {
 		res.status(500).json({
 			error: "An error occurred while deleting the pet.",
-		});
-	}
-});
-
-// Route to get unique pet breeds
-router.get("/breeds", async (req, res) => {
-	try {
-		const breeds = await getUniqueBreeds();
-		res.json(breeds);
-	} catch (error) {
-		res.status(500).json({
-			error: "An error occurred while fetching unique pet breeds.",
-		});
-	}
-});
-
-// Route to get unique pet types
-router.get("/types", async (req, res) => {
-	try {
-		const types = await getUniqueTypes();
-		res.json(types);
-	} catch (error) {
-		res.status(500).json({
-			error: "An error occurred while fetching unique pet types.",
 		});
 	}
 });

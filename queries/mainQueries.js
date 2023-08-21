@@ -41,9 +41,37 @@ const createStore = async (name, contact_email, phone_number, address) => {
  */
 const getPets = async () => {
 	try {
-		return await db.manyOrNone("SELECT * FROM Pets;");
+		return await db.manyOrNone(
+			"SELECT id, name, is_available, type, breed, price, image_url FROM Pets;"
+		);
 	} catch (error) {
 		console.error("Error fetching pets:", error);
+		return [];
+	}
+};
+
+/**
+ * Get a pet by id.
+ * @returns {Promise<Object>} pet searched.
+ */
+const getPetByID = async (id) => {
+	try {
+		return await db.oneOrNone("SELECT * FROM Pets WHERE id=$1;", [id]);
+	} catch (error) {
+		console.error("Error fetching pet:", error);
+		return [];
+	}
+};
+
+/**
+ * Get a store by id.
+ * @returns {Promise<Object>} pet searched.
+ */
+const getStoreByID = async (id) => {
+	try {
+		return await db.oneOrNone("SELECT * FROM PetStores WHERE id=$1;", [id]);
+	} catch (error) {
+		console.error("Error fetching store:", error);
 		return [];
 	}
 };
@@ -115,13 +143,14 @@ const updatePet = async (
 	weight,
 	breed,
 	price,
+	is_available,
 	store_id,
 	image_url,
 	description
 ) => {
 	try {
 		return await db.oneOrNone(
-			"UPDATE Pets SET name = $2, type = $3, age = $4, weight = $5, breed = $6, price = $7, store_id = $8, image_url = $9, description = $10 WHERE id = $1 RETURNING *;",
+			"UPDATE Pets SET name = $2, type = $3, age = $4, weight = $5, breed = $6, price = $7, store_id = $8, image_url = $9, description = $10,is_available=$11 WHERE id = $1 RETURNING *;",
 			[
 				id,
 				name,
@@ -133,6 +162,7 @@ const updatePet = async (
 				store_id,
 				image_url,
 				description,
+				is_available,
 			]
 		);
 	} catch (error) {
@@ -197,4 +227,6 @@ module.exports = {
 	deletePet,
 	getUniqueBreeds,
 	getUniqueTypes,
+	getPetByID,
+	getStoreByID,
 };

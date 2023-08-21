@@ -22,16 +22,18 @@ const validateStore = (req, res, next) => {
 // Validation middleware for creating a pet
 const validatePet = (req, res, next) => {
 	const schema = Joi.object({
+		id: Joi.number().integer(),
 		name: Joi.string().trim().required(),
 		type: Joi.string().trim().required(),
-		age: Joi.number().integer().min(0),
-		weight: Joi.number().precision(2),
+		age: Joi.number().integer().min(0).allow(null),
+		weight: Joi.number().precision(2).allow(null),
+		entry_date: Joi.date(),
+		description: Joi.string().trim(),
 		breed: Joi.string().trim(),
-		owner_id: Joi.number().integer().required(),
+		is_available: Joi.boolean(),
 		price: Joi.number().precision(2).required(),
 		store_id: Joi.number().integer().required(),
 		image_url: Joi.string().uri(),
-		description: Joi.string().trim(),
 	});
 
 	const { error } = schema.validate(req.body);

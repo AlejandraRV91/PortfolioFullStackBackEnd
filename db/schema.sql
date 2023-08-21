@@ -24,6 +24,7 @@ CREATE TABLE
         entry_date DATE DEFAULT CURRENT_DATE,
         description TEXT,
         breed VARCHAR(100),
+        is_available BOOLEAN DEFAULT true,
         price DECIMAL(10, 2) NOT NULL,
         store_id INTEGER NOT NULL,
         image_url TEXT,
