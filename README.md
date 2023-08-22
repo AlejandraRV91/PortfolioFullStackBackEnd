@@ -2,7 +2,7 @@
 
 # PetPalaceHub (Back-end)
 
-Welcome to PetPalaceHub, a project for managing information about pet owners and their pets. This document will guide you through the necessary steps to set up and understand the project on your local machine.
+Welcome to PetPalaceHub, a project for managing information about pet stores and their pets. This document will guide you through the necessary steps to set up and understand the project on your local machine.
 
 ## Project Setup
 
@@ -67,7 +67,7 @@ This will start the server on the specified port and connect to the PostgreSQL d
 
 ## Database Structure
 
-The project uses a PostgreSQL database with two main tables: `Owners` and `Pets`. Here's a description of both tables:
+The project uses a PostgreSQL database with two main tables: `stores` and `Pets`. Here's a description of both tables:
 
 ### Stores
 
