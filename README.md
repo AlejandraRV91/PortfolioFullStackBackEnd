@@ -83,15 +83,14 @@ The project uses a PostgreSQL database with two main tables: `stores` and `Pets`
 -   `name`: Pet's name (string, max 100 characters).
 -   `type`: Pet's type (string, max 50 characters).
 -   `age`: Pet's age (integer, non-negative).
--   `weight`: Pet's weight (decimal).
+-   `weight`: Pet's weight (2 decimals).
 -   `entry_date`: Pet's entry date (date, default: current date).
 -   `description`: Pet's description (text).
 -   `breed`: Pet's breed (string, max 100 characters).
 -   `price`: Pet's price (2 decimals).
 -   `store_id`: ID of the owner the pet belongs to (integer).
 -   `image_url`: URL of the pet's image (text).
--   Referential integrity and age check constraints.
-
+-   `is_available`: (boolean).
 ## Routes
 
 Below is a list of the routes in the application:
@@ -99,11 +98,13 @@ Below is a list of the routes in the application:
 ### Stores
 
 -   `GET /pets/stores`: Returns a list of stores.
+-   `GET /pets/stores/:id`: Returns an store with its id.
 -   `POST /pets/stores`: Creates a new store in the database.
 
 ### Pets
 
 -   `GET /pets`: Returns a list of pets.
+-   `GET /pets/:id`: Returns a pet with its id.
 -   `POST /pets`: Creates a new pet and stores it in the database.
 -   `PUT /pets/:id`: Updates details of a specific pet based on its ID.
 -   `DELETE /pets/:id`: Deletes a specific pet based on its ID.
